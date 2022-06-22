@@ -10,19 +10,20 @@ class Loteria{
 
     //Metodo resposavel por obter os resultados das loterias das caixas
     //@param string $loteria
+    //@param integer $concurso
     //@return array
-    public static function consultarResultado($loteria){
+    public static function consultarResultado($loteria,$concurso = null){
 
         //endpoint completo
-        $endpoint = self::URL_BASE.'/'.$loteria;
+        $endpoint = self::URL_BASE.'/'.$loteria.'/'.$concurso;
 
         //inicia o curl
         $curl = curl_init();
 
         //configura o curl
-        curl_setopt_array($curl, [
+        curl_setopt_array($curl,[
             CURLOPT_URL => $endpoint,
-            CURLOPT_RETURNTRASFER => true,
+            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => 'GET'
         ]);
 
@@ -32,9 +33,8 @@ class Loteria{
         //fecha o curl
         curl_close($curl);
 
-        echo "<pre>";
-        print_r($response);
-        echo "</pre>";
+        //retorna os dados em array
+        return strlen($response) ? json_decode($response, true) : [];
     }
 }
 
